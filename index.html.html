@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ginger Lemon Tea — a log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,560;0,9..144,640;1,9..144,460&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#FBF3E0;
+    --paper-deep:#F4E7C9;
+    --card:#FFFBF1;
+    --ink:#3A2614;
+    --ink-soft:#7A6242;
+    --ink-faint:#A38C6A;
+    --ginger:#D98324;
+    --honey:#EAB44C;
+    --lemon:#F6D44C;
+    --leaf:#6F8F5B;
+    --line:rgba(58,38,20,.13);
+    --line-soft:rgba(58,38,20,.07);
+    --shadow:0 1px 2px rgba(58,38,20,.05),0 12px 32px -16px rgba(58,38,20,.28);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:Inter,system-ui,sans-serif;
+    background:
+      radial-gradient(120% 80% at 50% -10%, #FCF6E8 0%, var(--paper) 46%, var(--paper-deep) 100%) fixed;
+    color:var(--ink);
+    min-height:100vh;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:clamp(18px,4vw,40px) clamp(16px,4vw,24px) 64px;
+  }
+  .wrap{max-width:540px;margin:0 auto}
+
+  /* ---- masthead ---- */
+  .eyebrow{
+    display:flex;align-items:center;gap:.55rem;
+    font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:1.4rem;
+  }
+  .eyebrow .dot{width:4px;height:4px;border-radius:50%;background:var(--ginger);opacity:.6}
+
+  /* ---- hero ---- */
+  .hero{
+    display:grid;grid-template-columns:auto 1fr;gap:clamp(16px,5vw,30px);
+    align-items:center;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:26px;
+    padding:clamp(20px,5vw,30px);
+    box-shadow:var(--shadow);
+    position:relative;overflow:hidden;
+  }
+  .hero::after{ /* faint citrus wash in the corner */
+    content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;
+    background:radial-gradient(circle,rgba(246,212,76,.32),transparent 68%);
+    pointer-events:none;
+  }
+  .glass-stage{position:relative;width:clamp(78px,22vw,104px)}
+  .steam{position:absolute;left:0;right:0;top:-26px;height:30px;pointer-events:none}
+  .steam path{
+    fill:none;stroke:var(--ink-soft);stroke-width:2.4;stroke-linecap:round;opacity:0;
+    animation:rise 4.2s ease-in-out infinite;
+  }
+  .steam path:nth-child(2){animation-delay:1.4s}
+  .steam path:nth-child(3){animation-delay:2.8s}
+  @keyframes rise{
+    0%{opacity:0;transform:translateY(6px) scaleY(.7)}
+    25%{opacity:.5}
+    60%{opacity:.28}
+    100%{opacity:0;transform:translateY(-10px) scaleY(1.15)}
+  }
+  .glass{width:100%;height:auto;display:block;filter:drop-shadow(0 8px 14px rgba(160,100,20,.22))}
+  .tea-fill{transition:transform .6s cubic-bezier(.32,.72,.3,1);transform-origin:bottom;transform-box:fill-box}
+
+  .count-block{min-width:0}
+  .count{
+    font-family:Fraunces,Georgia,serif;
+    font-weight:560;font-size:clamp(3.4rem,16vw,4.8rem);line-height:.9;
+    font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+    color:var(--ink);
+    background:linear-gradient(168deg,var(--ginger),#B5651D);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .count-label{
+    margin-top:.5rem;font-size:.95rem;color:var(--ink-soft);max-width:15ch;
+  }
+  .count-label em{font-family:Fraunces,serif;font-style:italic;color:var(--ginger);font-weight:460}
+
+  /* ---- log button ---- */
+  .log-row{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+  .log-btn{
+    appearance:none;border:none;cursor:pointer;font-family:inherit;
+    width:100%;padding:17px 22px;border-radius:18px;
+    background:linear-gradient(165deg,var(--honey),var(--ginger));
+    color:#3a2103;font-size:1.08rem;font-weight:600;letter-spacing:.01em;
+    box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 10px 22px -10px rgba(180,110,25,.7);
+    transition:transform .12s ease,box-shadow .12s ease,filter .12s ease;
+    display:flex;align-items:center;justify-content:center;gap:.6rem;
+  }
+  .log-btn:hover{filter:brightness(1.03);transform:translateY(-1px)}
+  .log-btn:active{transform:translateY(1px) scale(.992);box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 5px 12px -8px rgba(180,110,25,.7)}
+  .log-btn.pour{animation:pour .5s ease}
+  @keyframes pour{40%{transform:scale(.97)}70%{transform:scale(1.015)}}
+  .log-btn svg{width:20px;height:20px}
+
+  .detail-toggle{
+    background:none;border:none;cursor:pointer;font-family:inherit;
+    color:var(--ink-soft);font-size:.85rem;font-weight:500;
+    align-self:center;padding:4px 8px;border-radius:8px;
+    text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;
+  }
+  .detail-toggle:hover{color:var(--ginger)}
+
+  .detail{
+    display:none;gap:10px;flex-direction:column;
+    margin-top:2px;padding:14px;border:1px dashed var(--line);border-radius:14px;background:rgba(244,231,201,.4);
+  }
+  .detail.open{display:flex}
+  .detail input{
+    font-family:inherit;font-size:.95rem;color:var(--ink);
+    border:1px solid var(--line);border-radius:11px;background:var(--card);
+    padding:11px 13px;width:100%;
+  }
+  .detail input::placeholder{color:var(--ink-faint)}
+  .detail input:focus{outline:2px solid var(--honey);outline-offset:1px;border-color:transparent}
+
+  /* ---- stat strip ---- */
+  .stats{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;
+  }
+  .stat{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:14px 12px;text-align:center;
+  }
+  .stat .n{font-family:Fraunces,serif;font-weight:560;font-size:1.7rem;line-height:1;font-variant-numeric:tabular-nums}
+  .stat .k{font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin-top:6px}
+  .stat.streak .n{color:var(--ginger)}
+  .stat.week .n{color:var(--leaf)}
+
+  /* ---- rhythm chart ---- */
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:20px;margin-top:18px;box-shadow:var(--shadow);
+  }
+  .panel h2{
+    font-family:Fraunces,serif;font-weight:560;font-size:1.18rem;letter-spacing:-.01em;
+    display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+  }
+  .panel h2 small{font-family:Inter,sans-serif;font-weight:400;font-size:.78rem;color:var(--ink-faint);letter-spacing:0}
+  .week-chart{display:flex;align-items:flex-end;gap:8px;height:96px;margin-top:18px}
+  .day{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%}
+  .day .bar-track{flex:1;width:100%;display:flex;align-items:flex-end}
+  .day .bar{
+    width:100%;border-radius:7px 7px 4px 4px;min-height:4px;
+    background:linear-gradient(180deg,var(--honey),var(--ginger));
+    transition:height .5s cubic-bezier(.32,.72,.3,1);
+  }
+  .day.today .bar{background:linear-gradient(180deg,var(--lemon),var(--ginger));box-shadow:0 0 0 2px rgba(217,131,36,.18)}
+  .day .bar.empty{background:var(--line-soft)}
+  .day .dl{font-size:.66rem;color:var(--ink-faint);letter-spacing:.04em}
+  .day.today .dl{color:var(--ginger);font-weight:600}
+
+  /* ---- history ---- */
+  .pours{margin-top:0}
+  .day-group{margin-top:16px}
+  .day-group:first-of-type{margin-top:14px}
+  .day-head{
+    font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+    font-weight:600;padding-bottom:8px;border-bottom:1px solid var(--line-soft);
+  }
+  .pour{
+    display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line-soft);
+  }
+  .pour:last-child{border-bottom:none}
+  .pour .time{
+    font-variant-numeric:tabular-nums;font-weight:600;font-size:.92rem;color:var(--ink);
+    min-width:52px;
+  }
+  .pour .meta{flex:1;min-width:0}
+  .pour .note{font-size:.92rem;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pour .who{font-size:.74rem;color:var(--leaf);font-weight:600;letter-spacing:.02em}
+  .pour .note.muted{color:var(--ink-faint);font-style:italic}
+  .icon-btn{
+    appearance:none;border:none;background:none;cursor:pointer;
+    width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+    color:var(--ink-faint);transition:background .12s,color .12s,transform .12s;
+  }
+  .icon-btn:hover{background:var(--paper-deep)}
+  .icon-btn.love{color:var(--ink-faint)}
+  .icon-btn.love.on{color:#D6453B}
+  .icon-btn.love.on svg{fill:#D6453B}
+  .icon-btn.del:hover{color:#C0392B}
+  .icon-btn svg{width:18px;height:18px}
+
+  .empty{
+    text-align:center;padding:30px 16px 8px;color:var(--ink-soft);
+  }
+  .empty .big{font-family:Fraunces,serif;font-style:italic;font-size:1.25rem;color:var(--ink);margin-bottom:6px}
+
+  .foot{text-align:center;color:var(--ink-faint);font-size:.74rem;margin-top:26px;line-height:1.6}
+
+  :focus-visible{outline:2px solid var(--ginger);outline-offset:2px;border-radius:6px}
+
+  @media (max-width:380px){
+    .hero{grid-template-columns:1fr;text-align:center;justify-items:center}
+    .count-label{max-width:none}
+    .glass-stage{margin-bottom:4px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">
+    <span>ginger</span><span class="dot"></span>
+    <span>lemon</span><span class="dot"></span>
+    <span>tea</span>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="glass-stage">
+      <svg class="steam" viewBox="0 0 80 30" aria-hidden="true">
+        <path d="M22 28 C16 22 28 18 22 12 C18 8 26 4 22 0" />
+        <path d="M40 28 C34 22 46 18 40 12 C36 8 44 4 40 0" />
+        <path d="M58 28 C52 22 64 18 58 12 C54 8 62 4 58 0" />
+      </svg>
+      <svg class="glass" viewBox="0 0 100 130" role="img" aria-label="A glass of ginger lemon tea">
+        <defs>
+          <linearGradient id="tea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#F6D44C"/>
+            <stop offset="1" stop-color="#D98324"/>
+          </linearGradient>
+          <clipPath id="cup"><path d="M24 26 h52 l-6 86 a10 10 0 0 1 -10 9 h-20 a10 10 0 0 1 -10 -9 z"/></clipPath>
+        </defs>
+        <!-- liquid -->
+        <g clip-path="url(#cup)">
+          <rect class="tea-fill" x="20" y="40" width="60" height="90" fill="url(#tea)"/>
+        </g>
+        <!-- lemon slice -->
+        <g transform="translate(50 62)">
+          <circle r="15" fill="#FBE89A" stroke="#E9B83C" stroke-width="2.5"/>
+          <circle r="15" fill="none" stroke="#fff7d6" stroke-width="2" opacity=".8"/>
+          <g stroke="#E9B83C" stroke-width="1.4" opacity=".8">
+            <line x1="0" y1="0" x2="0" y2="-12"/><line x1="0" y1="0" x2="10.4" y2="-6"/>
+            <line x1="0" y1="0" x2="10.4" y2="6"/><line x1="0" y1="0" x2="0" y2="12"/>
+            <line x1="0" y1="0" x2="-10.4" y2="6"/><line x1="0" y1="0" x2="-10.4" y2="-6"/>
+          </g>
+          <circle r="3.4" fill="#FCEFAE" stroke="#E9B83C" stroke-width="1.2"/>
+        </g>
+        <!-- glass outline -->
+        <path d="M24 26 h52 l-6 86 a10 10 0 0 1 -10 9 h-20 a10 10 0 0 1 -10 -9 z"
+              fill="none" stroke="#C98A3E" stroke-width="3" opacity=".55"/>
+        <ellipse cx="50" cy="26" rx="26" ry="6" fill="none" stroke="#C98A3E" stroke-width="3" opacity=".55"/>
+      </svg>
+    </div>
+
+    <div class="count-block">
+      <div class="count" id="count" aria-live="polite">0</div>
+      <p class="count-label">cups of ginger lemon tea, <em>steeped together</em></p>
+    </div>
+  </section>
+
+  <!-- LOG -->
+  <div class="log-row">
+    <button class="log-btn" id="logBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      Log a cup
+    </button>
+    <button class="detail-toggle" id="detailToggle">add a note &amp; who poured it</button>
+    <div class="detail" id="detail">
+      <input id="noteInput" type="text" maxlength="80" placeholder="e.g. extra ginger, with honey" />
+      <input id="whoInput" type="text" maxlength="24" placeholder="who's drinking? (optional)" />
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat week"><div class="n" id="statWeek">0</div><div class="k">this week</div></div>
+    <div class="stat streak"><div class="n" id="statStreak">0</div><div class="k">day streak</div></div>
+    <div class="stat"><div class="n" id="statBest">—</div><div class="k">go-to time</div></div>
+  </div>
+
+  <!-- RHYTHM -->
+  <section class="panel">
+    <h2>The week's rhythm <small id="weekTotal"></small></h2>
+    <div class="week-chart" id="weekChart"></div>
+  </section>
+
+  <!-- HISTORY -->
+  <section class="panel pours">
+    <h2>Every pour <small id="pourCount"></small></h2>
+    <div id="history"></div>
+  </section>
+
+  <p class="foot">
+    Tap <strong>Log a cup</strong> each time the kettle goes on.<br/>
+    Your log is saved on this device and waits for you next time.
+  </p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "gingerlemon:log";
+  var entries = [];           // {id, ts, note, who, loved}
+  var hasStorage = (function(){ try{ var k="__t__"; localStorage.setItem(k,"1"); localStorage.removeItem(k); return true; }catch(e){ return false; } })();
+
+  var el = function(id){ return document.getElementById(id); };
+  var pad = function(n){ return n < 10 ? "0"+n : ""+n; };
+
+  // ---------- persistence ----------
+  function load(){
+    if(hasStorage){
+      try{
+        var raw = localStorage.getItem(KEY);
+        if(raw){ entries = JSON.parse(raw) || []; }
+      }catch(e){ entries = []; }
+    }
+    render();
+  }
+  function save(){
+    if(!hasStorage) return;
+    try{ localStorage.setItem(KEY, JSON.stringify(entries)); }
+    catch(e){ console.error("Could not save your log:", e); }
+  }
+
+  // ---------- date helpers ----------
+  function dayKey(ts){ var d = new Date(ts); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+  function startOfDay(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); }
+
+  function relativeDay(ts){
+    var now = new Date(); var todayK = dayKey(now.getTime());
+    var y = new Date(now.getTime() - 86400000); var yK = dayKey(y.getTime());
+    var k = dayKey(ts);
+    if(k === todayK) return "Today";
+    if(k === yK) return "Yesterday";
+    return new Date(ts).toLocaleDateString(undefined,{weekday:"long",month:"short",day:"numeric"});
+  }
+  function clock(ts){
+    var d = new Date(ts); return pad(d.getHours())+":"+pad(d.getMinutes());
+  }
+
+  // ---------- stats ----------
+  function weekCount(){
+    var cutoff = Date.now() - 6*86400000;
+    var c = startOfDay(new Date(cutoff));
+    return entries.filter(function(e){ return e.ts >= c; }).length;
+  }
+  function streak(){
+    if(!entries.length) return 0;
+    var days = {};
+    entries.forEach(function(e){ days[dayKey(e.ts)] = true; });
+    var n = 0; var cursor = new Date();
+    // streak counts back from today; if nothing today but something yesterday, still counts from yesterday
+    if(!days[dayKey(cursor.getTime())]) cursor = new Date(cursor.getTime() - 86400000);
+    while(days[dayKey(cursor.getTime())]){ n++; cursor = new Date(cursor.getTime() - 86400000); }
+    return n;
+  }
+  function goToTime(){
+    if(!entries.length) return "—";
+    var buckets = {morning:0,afternoon:0,evening:0,night:0};
+    entries.forEach(function(e){
+      var h = new Date(e.ts).getHours();
+      if(h<5) buckets.night++; else if(h<12) buckets.morning++;
+      else if(h<17) buckets.afternoon++; else if(h<22) buckets.evening++; else buckets.night++;
+    });
+    var best="—", max=-1;
+    Object.keys(buckets).forEach(function(k){ if(buckets[k]>max){max=buckets[k];best=k;} });
+    return best;
+  }
+
+  // ---------- render ----------
+  function animateGlass(){
+    var fill = document.querySelector(".tea-fill");
+    if(!fill) return;
+    // playful: fill dips then settles based on weekly activity
+    var lvl = Math.min(1, 0.25 + weekCount()/14);
+    fill.style.transform = "scaleY(" + (lvl*0.4) + ")";
+    requestAnimationFrame(function(){
+      setTimeout(function(){ fill.style.transform = "scaleY(" + lvl + ")"; }, 40);
+    });
+  }
+
+  function renderWeek(){
+    var wc = el("weekChart"); wc.innerHTML = "";
+    var counts = []; var labels = []; var todayIdx = -1;
+    var now = new Date();
+    for(var i=6;i>=0;i--){
+      var d = new Date(now.getTime() - i*86400000);
+      var k = dayKey(d.getTime());
+      var c = entries.filter(function(e){ return dayKey(e.ts) === k; }).length;
+      counts.push(c);
+      labels.push(["S","M","T","W","T","F","S"][d.getDay()]);
+      if(i===0) todayIdx = counts.length-1;
+    }
+    var max = Math.max(1, Math.max.apply(null, counts));
+    var total = counts.reduce(function(a,b){return a+b;},0);
+    el("weekTotal").textContent = total ? total+" this week" : "";
+    counts.forEach(function(c,idx){
+      var day = document.createElement("div");
+      day.className = "day" + (idx===todayIdx ? " today" : "");
+      var pct = c ? Math.max(8, Math.round(c/max*100)) : 0;
+      day.innerHTML =
+        '<div class="bar-track"><div class="bar'+(c?'':' empty')+'" style="height:0%" title="'+c+' cup'+(c===1?'':'s')+'"></div></div>'+
+        '<div class="dl">'+labels[idx]+'</div>';
+      wc.appendChild(day);
+      var bar = day.querySelector(".bar");
+      requestAnimationFrame(function(){ setTimeout(function(){ bar.style.height = (c?pct:100)+"%"; }, 30); });
+    });
+  }
+
+  function renderHistory(){
+    var box = el("history"); box.innerHTML = "";
+    el("pourCount").textContent = entries.length ? entries.length+" total" : "";
+    if(!entries.length){
+      box.innerHTML = '<div class="empty"><div class="big">No cups yet.</div>The kettle\'s on — log your first pour.</div>';
+      return;
+    }
+    var sorted = entries.slice().sort(function(a,b){ return b.ts - a.ts; });
+    var lastDay = null, group = null;
+    sorted.forEach(function(e){
+      var dk = dayKey(e.ts);
+      if(dk !== lastDay){
+        group = document.createElement("div");
+        group.className = "day-group";
+        var head = document.createElement("div");
+        head.className = "day-head";
+        head.textContent = relativeDay(e.ts);
+        group.appendChild(head);
+        box.appendChild(group);
+        lastDay = dk;
+      }
+      var row = document.createElement("div");
+      row.className = "pour";
+      var note = e.note ? escapeHtml(e.note) : "a quiet cup";
+      var noteCls = e.note ? "note" : "note muted";
+      var who = e.who ? '<span class="who">'+escapeHtml(e.who)+'</span>' : "";
+      row.innerHTML =
+        '<span class="time">'+clock(e.ts)+'</span>'+
+        '<div class="meta"><div class="'+noteCls+'">'+note+'</div>'+who+'</div>'+
+        '<button class="icon-btn love'+(e.loved?' on':'')+'" data-love="'+e.id+'" aria-label="Mark as a favourite">'+
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-8.5C.5 8.5 3 5 6.5 5 9 5 12 8 12 8s3-3 5.5-3C21 5 23.5 8.5 21.5 12.5 19 16.5 12 21 12 21z"/></svg>'+
+        '</button>'+
+        '<button class="icon-btn del" data-del="'+e.id+'" aria-label="Remove this entry">'+
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 7h14M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>'+
+        '</button>';
+      group.appendChild(row);
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  function render(){
+    el("count").textContent = entries.length;
+    el("statWeek").textContent = weekCount();
+    el("statStreak").textContent = streak();
+    el("statBest").textContent = goToTime();
+    renderWeek();
+    renderHistory();
+    animateGlass();
+  }
+
+  // ---------- actions ----------
+  function addCup(){
+    var note = el("noteInput").value.trim();
+    var who = el("whoInput").value.trim();
+    entries.push({ id: Date.now()+"-"+Math.random().toString(36).slice(2,6), ts: Date.now(), note: note, who: who, loved:false });
+    el("noteInput").value = ""; el("whoInput").value = "";
+    save(); render();
+    var b = el("logBtn"); b.classList.remove("pour"); void b.offsetWidth; b.classList.add("pour");
+  }
+
+  // ---------- wiring ----------
+  el("logBtn").addEventListener("click", addCup);
+  el("detailToggle").addEventListener("click", function(){
+    var d = el("detail"); var open = d.classList.toggle("open");
+    this.textContent = open ? "hide details" : "add a note & who poured it";
+    if(open) el("noteInput").focus();
+  });
+  el("history").addEventListener("click", function(ev){
+    var loveBtn = ev.target.closest("[data-love]");
+    var delBtn = ev.target.closest("[data-del]");
+    if(loveBtn){
+      var id = loveBtn.getAttribute("data-love");
+      entries.forEach(function(e){ if(e.id===id) e.loved = !e.loved; });
+      save(); renderHistory();
+    } else if(delBtn){
+      var did = delBtn.getAttribute("data-del");
+      entries = entries.filter(function(e){ return e.id !== did; });
+      save(); render();
+    }
+  });
+  // Enter in either detail field logs the cup
+  ["noteInput","whoInput"].forEach(function(id){
+    el(id).addEventListener("keydown", function(ev){ if(ev.key==="Enter") addCup(); });
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>
